@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GrowthGenie - Google Ads For Builders</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --green: #4ade80;
+      --green-dim: rgba(74,222,128,0.12);
+      --green-glow: rgba(74,222,128,0.25);
+      --bg: #050505;
+      --surface: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.07);
+      --border-hover: rgba(74,222,128,0.4);
+      --text: #ffffff;
+      --muted: #9ca3af;
+      --muted2: #71717a;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    .container { width: 90%; max-width: 1280px; margin: auto; }
+
+    /* GLOWS */
+    .glow {
+      position: fixed; border-radius: 50%;
+      filter: blur(130px); z-index: -1; opacity: 0.18; pointer-events: none;
+    }
+    .glow1 { background: #4ade80; width: 500px; height: 500px; top: -140px; left: 5%; }
+    .glow2 { background: #2563eb; width: 420px; height: 420px; bottom: -140px; right: 3%; }
+
+    /* NAV */
+    header {
+      position: sticky; top: 0; z-index: 1000;
+      backdrop-filter: blur(14px);
+      background: rgba(5,5,5,0.6);
+      border-bottom: 1px solid var(--border);
+    }
+    nav {
+      display: flex; align-items: center;
+      justify-content: space-between; padding: 20px 0;
+    }
+    .logo { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; }
+    .logo span { color: var(--green); }
+    .nav-links { display: flex; gap: 32px; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.875rem; font-weight: 500; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: white; }
+    .btn {
+      display: inline-block;
+      background: var(--green); color: black;
+      padding: 13px 26px; border-radius: 14px;
+      font-weight: 700; text-decoration: none;
+      font-family: 'Syne', sans-serif; font-size: 0.9rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: none; cursor: pointer;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px var(--green-glow); }
+
+    /* ══════════════════════════════════════
+       HERO WITH FORM
+    ══════════════════════════════════════ */
+    .hero { padding: 90px 0 80px; }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 70px;
+      align-items: start;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 10px 18px; border-radius: 999px;
+      margin-bottom: 28px; color: var(--muted); font-size: 13px;
+    }
+    .dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse {
+      0%,100% { opacity: 1; box-shadow: 0 0 0 0 var(--green-glow); }
+      50% { opacity: 0.7; box-shadow: 0 0 0 6px transparent; }
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.8rem, 5vw, 4.4rem);
+      font-weight: 800; line-height: 1.0;
+      letter-spacing: -0.03em; margin-bottom: 22px;
+    }
+    .hero h1 em { color: var(--green); font-style: normal; display: block; }
+    .hero > .container > .hero-grid > div > p {
+      color: var(--muted); font-size: 1.05rem;
+      line-height: 1.8; margin-bottom: 32px; max-width: 480px;
+    }
+
+    .trust-row {
+      display: flex; flex-wrap: wrap; gap: 16px; margin-top: 28px;
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 0.8rem; color: var(--muted); font-weight: 500;
+    }
+    .tick { color: var(--green); font-size: 13px; font-weight: 700; }
+
+    /* HERO FORM */
+    .hero-form-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 28px; padding: 38px;
+      backdrop-filter: blur(20px);
+      position: relative; overflow: hidden;
+    }
+    .hero-form-box::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--green), transparent);
+    }
+    .hero-form-box h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem; font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .hero-form-box p {
+      color: var(--muted); font-size: 0.85rem;
+      margin-bottom: 24px; line-height: 1.6;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-group { margin-bottom: 14px; }
+    .form-group label {
+      display: block; font-size: 0.75rem; font-weight: 600;
+      color: var(--muted); letter-spacing: 0.05em;
+      text-transform: uppercase; margin-bottom: 7px;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%; padding: 14px 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 12px; color: white;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem; outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: #52525b; }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus { border-color: var(--green); }
+    .form-group select option { background: #111; }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+    .form-submit { width: 100%; font-size: 1rem; padding: 16px; border-radius: 14px; margin-top: 6px; }
+    .form-note {
+      text-align: center; font-size: 0.75rem;
+      color: var(--muted2); margin-top: 10px;
+    }
+
+    /* ══════════════════════════════════════
+       STATS BAR
+    ══════════════════════════════════════ */
+    .stats-bar {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 36px 0; margin: 0 0 0;
+    }
+    .stats-inner {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0; text-align: center;
+    }
+    .stat-item {
+      padding: 10px 20px;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem; font-weight: 800;
+      color: var(--green); line-height: 1; margin-bottom: 5px;
+    }
+    .stat-label { font-size: 0.8rem; color: var(--muted); }
+
+    /* ══════════════════════════════════════
+       SECTIONS
+    ══════════════════════════════════════ */
+    section { padding: 100px 0; }
+    .section-title { text-align: center; margin-bottom: 60px; }
+    .section-tag {
+      color: var(--green); text-transform: uppercase;
+      letter-spacing: 4px; font-size: 12px; font-weight: 600;
+      display: inline-block; margin-bottom: 14px;
+    }
+    .section-title h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 3.5vw, 3rem);
+      font-weight: 800; letter-spacing: -0.03em;
+      margin-bottom: 18px; line-height: 1.1;
+    }
+    .section-title p {
+      color: var(--muted); max-width: 620px;
+      margin: auto; line-height: 1.8; font-size: 1rem;
+    }
+
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 28px; padding: 36px; transition: transform 0.25s, border-color 0.25s;
+    }
+    .card:hover { transform: translateY(-6px); border-color: var(--border-hover); }
+    .card-icon {
+      width: 56px; height: 56px;
+      background: var(--green-dim); border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px; font-size: 22px;
+    }
+    .card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.15rem; font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .card p { color: var(--muted); line-height: 1.75; font-size: 0.9rem; }
+
+    /* ══════════════════════════════════════
+       WHY US SECTION (new)
+    ══════════════════════════════════════ */
+    .why-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: center;
+    }
+    .why-left h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.9rem, 3.5vw, 2.8rem);
+      font-weight: 800; letter-spacing: -0.03em;
+      line-height: 1.1; margin-bottom: 20px;
+    }
+    .why-left h2 em { color: var(--green); font-style: normal; }
+    .why-left p {
+      color: var(--muted); line-height: 1.8;
+      font-size: 1rem; margin-bottom: 32px;
+    }
+    .why-list { display: flex; flex-direction: column; gap: 16px; }
+    .why-item {
+      display: flex; gap: 14px; align-items: flex-start;
+    }
+    .why-icon {
+      width: 36px; height: 36px; min-width: 36px;
+      background: var(--green-dim); border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+    }
+    .why-item-text strong {
+      font-size: 0.95rem; font-weight: 700; display: block; margin-bottom: 3px;
+    }
+    .why-item-text span { font-size: 0.83rem; color: var(--muted); line-height: 1.6; }
+
+    .why-right {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .result-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 24px;
+      transition: border-color 0.2s;
+    }
+    .result-card:hover { border-color: var(--border-hover); }
+    .result-card:first-child {
+      grid-column: 1 / -1;
+      background: var(--green-dim); border-color: rgba(74,222,128,0.2);
+      display: flex; align-items: center; gap: 20px;
+    }
+    .result-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.2rem; font-weight: 800;
+      color: var(--green); line-height: 1;
+    }
+    .result-label { font-size: 0.8rem; color: var(--muted); margin-top: 5px; }
+    .result-card:first-child .result-num { font-size: 2.8rem; }
+    .result-card:first-child .result-label { font-size: 0.9rem; }
+
+    /* ══════════════════════════════════════
+       PROCESS SECTION
+    ══════════════════════════════════════ */
+    .process-list { display: flex; flex-direction: column; gap: 0; }
+    .process-step {
+      display: grid; grid-template-columns: 80px 1fr;
+      gap: 30px; align-items: start; padding: 36px 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .process-step:last-child { border-bottom: none; }
+    .step-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 3.5rem; font-weight: 800;
+      color: rgba(74,222,128,0.15); line-height: 1;
+      letter-spacing: -0.05em;
+    }
+    .step-content h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem; font-weight: 700;
+      margin-bottom: 8px; padding-top: 8px;
+    }
+    .step-content p { color: var(--muted); line-height: 1.75; font-size: 0.9rem; }
+
+    /* ══════════════════════════════════════
+       CTA SECTION
+    ══════════════════════════════════════ */
+    .cta-section { padding: 0 0 100px; }
+    .cta-block {
+      background: linear-gradient(135deg, #16a34a 0%, #4ade80 100%);
+      border-radius: 36px; padding: 70px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: center;
+    }
+    .cta-block h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800; letter-spacing: -0.03em;
+      color: black; line-height: 1.1; margin-bottom: 16px;
+    }
+    .cta-block p { color: rgba(0,0,0,0.65); font-size: 1rem; line-height: 1.8; }
+    .form-box {
+      background: #050505; border-radius: 24px; padding: 36px;
+    }
+    .form-box .form-group input,
+    .form-box .form-group textarea {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.08);
+    }
+    .form-box .form-group label { color: #9ca3af; }
+
+    /* FOOTER */
+    footer {
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+    }
+    .footer-inner {
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 20px;
+    }
+    footer p { color: var(--muted2); font-size: 0.85rem; }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .hero-grid, .why-grid, .cta-block { grid-template-columns: 1fr; }
+      .why-right { grid-template-columns: 1fr 1fr; }
+      .grid-3 { grid-template-columns: 1fr 1fr; }
+      .cta-block { padding: 40px; }
+    }
+    @media (max-width: 640px) {
+      .grid-3, .why-right, .form-row { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .stats-inner { grid-template-columns: 1fr 1fr; }
+      .stat-item:nth-child(2) { border-right: none; }
+      .stat-item:nth-child(3) { border-right: 1px solid var(--border); border-top: 1px solid var(--border); }
+      .stat-item:nth-child(4) { border-top: 1px solid var(--border); border-right: none; }
+    }
+
+    /* Animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fu { animation: fadeUp 0.65s ease both; }
+    .fu1 { animation-delay: 0.08s; }
+    .fu2 { animation-delay: 0.16s; }
+    .fu3 { animation-delay: 0.26s; }
+    .fu4 { animation-delay: 0.38s; }
+  </style>
+</head>
+<body>
+
+<div class="glow glow1"></div>
+<div class="glow glow2"></div>
+
+<header>
+  <div class="container">
+    <nav>
+      <div class="logo">Growth<span>Genie</span></div>
+      <div class="nav-links">
+        <a href="#services">Services</a>
+        <a href="#why-us">Why Us</a>
+        <a href="#process">Process</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <a href="#contact" class="btn">Book Free Call</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <!-- LEFT: Copy -->
+      <div>
+        <div class="hero-badge fu">
+          <div class="dot"></div>
+          Google Ads Specialists For UK Builders
+        </div>
+        <h1 class="fu fu1">
+          Generate More<br>
+          <em>Qualified Leads</em><br>
+          For Your Build
+        </h1>
+        <p class="fu fu2">
+          GrowthGenie runs high-converting Google Search campaigns for UK builders, contractors, and home improvement businesses — turning ad spend into booked jobs.
+        </p>
+        <div class="trust-row fu fu3">
+          <span class="trust-item"><span class="tick">✓</span> No wasted ad spend</span>
+          <span class="trust-item"><span class="tick">✓</span> Full conversion tracking</span>
+          <span class="trust-item"><span class="tick">✓</span> No long contracts</span>
+          <span class="trust-item"><span class="tick">✓</span> Results-focused management</span>
+        </div>
+      </div>
+
+      <!-- RIGHT: Hero Form -->
+      <div class="hero-form-box fu fu2">
+        <h3>Get Your Free Strategy Call</h3>
+        <p>Tell us about your business and we'll show you exactly how Google Ads can generate more leads for you.</p>
+
+        <form id="heroForm">
+          <input type="hidden" name="_subject" value="New Lead — GrowthGenie Hero Form">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Your Name</label>
+              <input type="text" name="name" placeholder="e.g. John Smith" required>
+            </div>
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="tel" name="phone" placeholder="e.g. 07700 900000">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" name="email" placeholder="you@company.co.uk" required>
+          </div>
+          <div class="form-group">
+            <label>Your Trade / Business Type</label>
+            <select name="trade">
+              <option value="" disabled selected>Select your trade</option>
+              <option>Builder / General Contractor</option>
+              <option>House Extensions</option>
+              <option>Loft Conversions</option>
+              <option>Kitchen & Bathroom Renovations</option>
+              <option>Roofing</option>
+              <option>Windows & Doors</option>
+              <option>Landscaping</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Monthly Google Ads Budget (optional)</label>
+            <select name="budget">
+              <option value="" disabled selected>Approx. budget</option>
+              <option>Under £500/month</option>
+              <option>£500 – £1,000/month</option>
+              <option>£1,000 – £2,500/month</option>
+              <option>£2,500+/month</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+          <button type="submit" class="btn form-submit">Book My Free Strategy Call →</button>
+          <p class="form-note">🔒 No spam. No obligation. We'll get back within 1 working day.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ STATS BAR ═══════════ -->
+<div class="stats-bar">
+  <div class="container">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <div class="stat-num">£18</div>
+        <div class="stat-label">Average cost per lead</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">6.2%</div>
+        <div class="stat-label">Average click-through rate</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">UK</div>
+        <div class="stat-label">Builders & trades only</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Conversion tracking included</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ INDUSTRIES ═══════════ -->
+<section id="industries">
+  <div class="container">
+    <div class="section-title">
+      <span class="section-tag">Industries We Help</span>
+      <h2>Built For Home Improvement Businesses</h2>
+      <p>We specialise in high-ticket local service businesses that need a consistent flow of qualified enquiries.</p>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-icon">🏠</div>
+        <h3>House Extensions</h3>
+        <p>Generate enquiries from homeowners actively searching for extension specialists in your area.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏗️</div>
+        <h3>Loft Conversions</h3>
+        <p>Capture high-intent searches from homeowners planning loft projects before they call a competitor.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🍳</div>
+        <h3>Kitchen Renovations</h3>
+        <p>Drive qualified leads with targeted search campaigns for kitchen fitters and renovation companies.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🪟</div>
+        <h3>Windows & Doors</h3>
+        <p>Reach homeowners actively searching for replacement windows and door installations near them.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏢</div>
+        <h3>Groundworks & Driveways</h3>
+        <p>Capture local intent searches for groundwork contractors, driveways, and patios.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🛁</div>
+        <h3>Bathrooms</h3>
+        <p>Generate bathroom renovation leads from homeowners with budget and high purchase intent.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SERVICES ═══════════ -->
+<section id="services">
+  <div class="container">
+    <div class="section-title">
+      <span class="section-tag">Services</span>
+      <h2>Everything Focused On Lead Generation</h2>
+      <p>No bloated retainers. No unnecessary services. Just a focused system designed to generate qualified leads for builders.</p>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <h3>Google Search Ads</h3>
+        <p>Target high-intent searches from homeowners actively looking for builders. We handle everything from keyword research to bid strategy.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📄</div>
+        <h3>Landing Pages</h3>
+        <p>High-converting landing pages designed specifically to increase calls and enquiries from your ad traffic — not generic templates.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <h3>Conversion Tracking</h3>
+        <p>Track every form submission, phone call, and lead with accurate GTM and Google Ads reporting. No guesswork.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ WHY US (NEW SECTION) ═══════════ -->
+<section id="why-us">
+  <div class="container">
+    <div class="why-grid">
+      <!-- Left: Copy + list -->
+      <div>
+        <p class="section-tag">Why GrowthGenie</p>
+        <h2 class="why-left-h">Most agencies are<br><em>generalists</em>.<br>We're not.</h2>
+        <p style="color:var(--muted);line-height:1.8;font-size:1rem;margin:20px 0 32px;">Most marketing agencies will run Google Ads across every industry — meaning your campaigns are managed by someone who ran an e-commerce campaign last week and a dentist campaign this week. GrowthGenie only works with builders and tradespeople. That focus is your advantage.</p>
+        <div class="why-list">
+          <div class="why-item">
+            <div class="why-icon">🔑</div>
+            <div class="why-item-text">
+              <strong>Industry-specific keyword lists</strong>
+              <span>We've built extensive negative keyword lists and proven search term sets for the UK construction sector — no learning curve, no wasted spend.</span>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-icon">📍</div>
+            <div class="why-item-text">
+              <strong>Local targeting that actually works</strong>
+              <span>Radius targeting, location bid adjustments, and geo-specific ad copy — so you only appear where your vans can reach.</span>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-icon">📈</div>
+            <div class="why-item-text">
+              <strong>Transparent monthly reporting</strong>
+              <span>Clear reports every month showing leads generated, cost per lead, and what changed — no agency waffle, just honest numbers.</span>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-icon">🤝</div>
+            <div class="why-item-text">
+              <strong>Direct access, no account managers</strong>
+              <span>You deal directly with the person running your campaigns — no handoffs, no delays, no miscommunication.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Result cards -->
+      <div class="why-right">
+        <div class="result-card">
+          <div>
+            <div class="result-num">£18</div>
+            <div class="result-label">Average cost per qualified lead — UK builders</div>
+          </div>
+          <div style="margin-left:auto;text-align:right">
+            <div style="font-size:0.75rem;color:var(--muted);margin-bottom:4px">vs. industry average</div>
+            <div style="font-size:1.4rem;font-family:'Syne',sans-serif;font-weight:800;color:var(--muted2);text-decoration:line-through">£55+</div>
+          </div>
+        </div>
+        <div class="result-card">
+          <div class="result-num">6.2%</div>
+          <div class="result-label">Click-through rate</div>
+        </div>
+        <div class="result-card">
+          <div class="result-num">14%</div>
+          <div class="result-label">Avg. conversion rate</div>
+        </div>
+        <div class="result-card" style="grid-column:1/-1;">
+          <div style="margin-bottom:14px">
+            <div style="font-size:0.75rem;color:var(--muted);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em">Search Impression Share</div>
+            <div style="height:8px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden">
+              <div style="width:78%;height:100%;background:var(--green);border-radius:999px"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:6px">
+              <span style="font-size:0.75rem;color:var(--muted)">Your campaigns</span>
+              <span style="font-size:0.8rem;font-weight:700;color:var(--green)">78%</span>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:0.75rem;color:var(--muted);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em">Lead Quality Score</div>
+            <div style="height:8px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden">
+              <div style="width:91%;height:100%;background:var(--green);border-radius:999px"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:6px">
+              <span style="font-size:0.75rem;color:var(--muted)">Qualified enquiries</span>
+              <span style="font-size:0.8rem;font-weight:700;color:var(--green)">91%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ PROCESS ═══════════ -->
+<section id="process">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start">
+      <div>
+        <p class="section-tag">How It Works</p>
+        <h2 style="font-family:'Syne',sans-serif;font-size:clamp(1.9rem,3.5vw,2.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.1;margin-bottom:18px">From first call to<br>leads in your inbox</h2>
+        <p style="color:var(--muted);line-height:1.8;font-size:1rem">A clear, transparent process — no agency mystery. Here's exactly what happens when you work with GrowthGenie.</p>
+      </div>
+      <div class="process-list">
+        <div class="process-step">
+          <div class="step-num">01</div>
+          <div class="step-content">
+            <h3>Free Strategy Call & Audit</h3>
+            <p>We review your business, target areas, and either your existing Google Ads account or competitor landscape to spot what's working and what's not.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-num">02</div>
+          <div class="step-content">
+            <h3>Campaign Blueprint</h3>
+            <p>A clear strategy doc with target keywords, budget recommendations, expected cost-per-lead, and ad structure — before you spend a penny.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-num">03</div>
+          <div class="step-content">
+            <h3>Build & Launch</h3>
+            <p>Full campaign setup in your Google Ads account. Conversion tracking verified live. Landing page built if needed. We don't launch until tracking is confirmed.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-num">04</div>
+          <div class="step-content">
+            <h3>Manage, Optimise & Report</h3>
+            <p>Monthly bid reviews, search term pruning, A/B ad testing, and a plain-English report each month. You always know what your money is doing.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CTA / CONTACT ═══════════ -->
+<section class="cta-section" id="contact">
+  <div class="container">
+    <div class="cta-block">
+      <div>
+        <h2>Ready To Generate More Builder Leads?</h2>
+        <p>Book a free consultation and discover exactly how Google Ads can fill your enquiry pipeline with qualified homeowners ready to spend.</p>
+        <div style="margin-top:28px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:center;gap:10px;font-size:0.9rem;color:rgba(0,0,0,0.6)">
+            <span style="color:#16a34a;font-weight:700">✓</span> Free account audit included
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:0.9rem;color:rgba(0,0,0,0.6)">
+            <span style="color:#16a34a;font-weight:700">✓</span> No obligation, no pressure
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:0.9rem;color:rgba(0,0,0,0.6)">
+            <span style="color:#16a34a;font-weight:700">✓</span> Reply within 1 working day
+          </div>
+        </div>
+      </div>
+      <div class="form-box">
+        <form id="ctaForm">
+          <input type="hidden" name="_subject" value="New Lead — GrowthGenie Strategy Call">
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" name="name" placeholder="John Smith" required>
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" name="email" placeholder="you@company.co.uk" required>
+          </div>
+          <div class="form-group">
+            <label>Company Name</label>
+            <input type="text" name="company" placeholder="Smith Builders Ltd">
+          </div>
+          <div class="form-group">
+            <label>Tell Us About Your Business</label>
+            <textarea rows="4" name="message" placeholder="What trade are you in? Where do you operate?"></textarea>
+          </div>
+          <button type="submit" class="btn form-submit">Book Free Strategy Call →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-inner">
+    <div>
+      <div class="logo" style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:4px">Growth<span style="color:var(--green)">Genie</span></div>
+      <p>Google Ads Lead Generation For UK Builders</p>
+    </div>
+    <p>© 2026 GrowthGenie. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  async function submitForm(formId) {
+    const form = document.getElementById(formId);
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = form.querySelector('button[type="submit"]');
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+
+      const data = new FormData(form);
+
+      try {
+        const res = await fetch('https://formspree.io/f/mbdbjwzp', {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (res.ok) {
+          window.location.href = 'https://growthgenie-google-ads.vercel.app/thank-you.html';
+        } else {
+          btn.textContent = 'Something went wrong. Try again.';
+          btn.disabled = false;
+        }
+      } catch(err) {
+        btn.textContent = 'Error. Please try again.';
+        btn.disabled = false;
+      }
+    });
+  }
+
+  submitForm('heroForm');
+  submitForm('ctaForm');
+</script>
+
+</body>
+</html>
