@@ -356,21 +356,131 @@
     footer p { color: var(--muted2); font-size: 0.85rem; }
 
     /* ══════════════════════════════════════
-       RESPONSIVE
+       HAMBURGER MENU
+    ══════════════════════════════════════ */
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px; background: none; border: none;
+    }
+    .hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: white; border-radius: 2px;
+      transition: all 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none; flex-direction: column;
+      background: rgba(5,5,5,0.98);
+      border-bottom: 1px solid var(--border);
+      padding: 0 5%;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      color: var(--muted); text-decoration: none;
+      font-size: 1rem; font-weight: 500;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.2s;
+    }
+    .mobile-menu a:last-child { border-bottom: none; color: var(--green); font-weight: 700; }
+    .mobile-menu a:hover { color: white; }
+
+    /* ══════════════════════════════════════
+       TABLET (max 1024px)
     ══════════════════════════════════════ */
     @media (max-width: 1024px) {
       .hero-grid, .why-grid, .cta-block { grid-template-columns: 1fr; }
       .why-right { grid-template-columns: 1fr 1fr; }
       .grid-3 { grid-template-columns: 1fr 1fr; }
       .cta-block { padding: 40px; }
+      section { padding: 70px 0; }
+      #process .container > div { grid-template-columns: 1fr !important; gap: 40px !important; }
     }
+
+    /* ══════════════════════════════════════
+       MOBILE (max 640px)
+    ══════════════════════════════════════ */
     @media (max-width: 640px) {
-      .grid-3, .why-right, .form-row { grid-template-columns: 1fr; }
+      /* Nav */
       .nav-links { display: none; }
+      .nav-cta-desktop { display: none; }
+      .hamburger { display: flex; }
+      nav { padding: 16px 0; }
+      .logo { font-size: 22px; }
+
+      /* General sections */
+      section { padding: 52px 0; }
+      .hero { padding: 44px 0 36px; }
+      .cta-section { padding: 0 0 52px; }
+
+      /* Hero copy */
+      .hero-grid { gap: 32px; }
+      .hero h1 { font-size: 2.1rem; line-height: 1.05; }
+      .hero-badge { font-size: 11px; padding: 8px 13px; margin-bottom: 18px; }
+      .hero > .container > .hero-grid > div > p { font-size: 0.93rem; margin-bottom: 20px; }
+      .trust-row { gap: 8px; margin-top: 20px; }
+      .trust-item { font-size: 0.76rem; }
+
+      /* Hero form */
+      .hero-form-box { padding: 22px 18px; border-radius: 18px; }
+      .hero-form-box h3 { font-size: 1.15rem; }
+      .hero-form-box > p { font-size: 0.82rem; margin-bottom: 18px; }
+      .form-row { grid-template-columns: 1fr; gap: 0; }
+      .form-group { margin-bottom: 12px; }
+      .form-group input,
+      .form-group textarea,
+      .form-group select { padding: 12px 13px; font-size: 0.85rem; border-radius: 10px; }
+      .form-submit { padding: 14px; font-size: 0.95rem; }
+
+      /* Stats bar */
+      .stats-bar { padding: 24px 0; }
       .stats-inner { grid-template-columns: 1fr 1fr; }
+      .stat-item { padding: 10px 12px; }
+      .stat-num { font-size: 1.5rem; }
+      .stat-label { font-size: 0.7rem; }
       .stat-item:nth-child(2) { border-right: none; }
       .stat-item:nth-child(3) { border-right: 1px solid var(--border); border-top: 1px solid var(--border); }
       .stat-item:nth-child(4) { border-top: 1px solid var(--border); border-right: none; }
+
+      /* Section titles */
+      .section-title { margin-bottom: 32px; }
+      .section-title h2 { font-size: 1.65rem; }
+      .section-title p { font-size: 0.88rem; }
+
+      /* Cards */
+      .grid-3 { grid-template-columns: 1fr; gap: 14px; }
+      .card { padding: 22px 20px; border-radius: 18px; }
+      .card-icon { width: 46px; height: 46px; font-size: 18px; margin-bottom: 16px; }
+      .card h3 { font-size: 1.05rem; }
+      .card p { font-size: 0.85rem; }
+
+      /* Why Us */
+      .why-grid { gap: 32px; }
+      .why-right { grid-template-columns: 1fr; }
+      .result-card:first-child { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .result-num { font-size: 1.8rem; }
+      .result-card:first-child .result-num { font-size: 2.2rem; }
+
+      /* Process */
+      #process .container > div { grid-template-columns: 1fr !important; gap: 28px !important; }
+      .process-step { grid-template-columns: 44px 1fr; gap: 14px; padding: 20px 0; }
+      .step-num { font-size: 2rem; }
+      .step-content h3 { font-size: 1rem; padding-top: 4px; }
+      .step-content p { font-size: 0.85rem; }
+
+      /* CTA block */
+      .cta-block { padding: 26px 18px; border-radius: 22px; gap: 28px; }
+      .cta-block h2 { font-size: 1.65rem; }
+      .cta-block p { font-size: 0.9rem; }
+      .form-box { padding: 20px 16px; border-radius: 16px; }
+
+      /* Footer */
+      footer { padding: 24px 0; }
+      .footer-inner { flex-direction: column; align-items: flex-start; gap: 10px; }
+      footer p { font-size: 0.78rem; }
     }
 
     /* Animations */
@@ -400,8 +510,19 @@
         <a href="#process">Process</a>
         <a href="#contact">Contact</a>
       </div>
-      <a href="#contact" class="btn">Book Free Call</a>
+      <a href="#contact" class="btn nav-cta-desktop">Book Free Call</a>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </nav>
+  </div>
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#services" onclick="closeMobile()">Services</a>
+    <a href="#why-us" onclick="closeMobile()">Why Us</a>
+    <a href="#process" onclick="closeMobile()">Process</a>
+    <a href="#contact" onclick="closeMobile()">Contact</a>
+    <a href="#contact" onclick="closeMobile()">📞 Book Free Call</a>
   </div>
 </header>
 
@@ -767,6 +888,19 @@
 </footer>
 
 <script>
+  // Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+  function closeMobile() {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  }
+
+  // Form submission
   async function submitForm(formId) {
     const form = document.getElementById(formId);
     form.addEventListener('submit', async function(e) {
